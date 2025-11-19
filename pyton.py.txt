@@ -1,0 +1,72 @@
+import random
+import string
+
+def generate_secure_password(length=16, use_uppercase=True, use_lowercase=True, use_digits=True, use_symbols=True):
+    """
+    Generates a secure, random password.
+
+    :param length: The desired length of the password (default is 16).
+    :param use_uppercase: Include uppercase letters (A-Z).
+    :param use_lowercase: Include lowercase letters (a-z).
+    :param use_digits: Include digits (0-9).
+    :param use_symbols: Include symbols (e.g., !@#$%^&*).
+    :return: The generated password as a string.
+    """
+    
+    # Define character sets to use
+    characters = ""
+    if use_uppercase:
+        characters += string.ascii_uppercase
+    if use_lowercase:
+        characters += string.ascii_lowercase
+    if use_digits:
+        characters += string.digits
+    if use_symbols:
+        # A set of commonly accepted secure symbols
+        characters += "!@#$%^&*()_+-=[]{}|;:,.<>?"
+
+    if not characters:
+        return "Error: You must select at least one character type."
+
+    # Generate the password
+    # random.choice() picks a random character from the 'characters' string
+    # ''.join() combines all the chosen characters into a single string
+    password = ''.join(random.choice(characters) for i in range(length))
+    
+    return password
+
+def main():
+    """
+    Main function to run the password generator from the command line.
+    """
+    print("--- Secure Password Generator ---")
+    
+    try:
+        # Get user input for length
+        length = int(input("Enter desired password length (default 16): ") or 16)
+        
+        # Get user input for complexity options
+        use_upper = input("Include Uppercase letters (y/n, default y): ").lower() != 'n'
+        use_lower = input("Include Lowercase letters (y/n, default y): ").lower() != 'n'
+        use_digits = input("Include Digits (0-9) (y/n, default y): ").lower() != 'n'
+        use_symbols = input("Include Symbols (!@#$...) (y/n, default y): ").lower() != 'n'
+
+        if length <= 0:
+            print("\nError: Length must be a positive number.")
+            return
+
+        # Generate and display the password
+        secure_key = generate_secure_password(length, use_upper, use_lower, use_digits, use_symbols)
+        
+        print("\n** Your Generated Secure Key/Password is: **")
+        print(f"** {secure_key} **")
+        print(f"\nLength: {len(secure_key)}")
+
+    except ValueError:
+        print("\nError: Invalid input for length. Please enter a number.")
+    except Exception as e:
+        print(f"\nAn unexpected error occurred: {e}")
+
+
+if __name__ == "__main__":
+    main()
